@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!--
+
+    Shadowhunt PMD Rulesets - Extended PMD Rulesets
+    Copyright © 2018 shadowhunt (dev@shadowhunt.de)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<ruleset name="My Rule" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <description>One logical operation per line.</description>
+
+    <rule class="de.shadowhunt.pmd.java.NoFunctionOrConstructorCallsInArguments" language="java"
+    	  name="NoFunctionOrConstructorCallsInArguments"
+          message="Avoid calls to functions or constructors in arguments.">
+        <description>Arguments must not contain, calls to functions or constructors.</description>
+        <priority>1</priority>
+        <example>
+<![CDATA[
+public class Example {
+
+    ...
+    
+    public void wrong() {
+        doSomeThing(new Object(), hashCode());
+    }
+    
+    public void correct() {
+        Object object = new Object();
+        int random = hashCode();
+        doSomeThing(object, random);
+    }
+}
+]]>
+        </example>
+    </rule>
+        <rule class="de.shadowhunt.pmd.java.NoMultipleFuctionOrConstrucorCallsPerExpression" language="java"
+    	  name="NoMultipleFuctionOrConstrucorCallsPerExpression"
+          message="Avoid having mutliple calls to functions or constructors in a statement.">
+        <description>There must be no mutliple calls to functions or constructors in a single statement.</description>
+        <priority>1</priority>
+    </rule>
+</ruleset>

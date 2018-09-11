@@ -17,15 +17,31 @@
  */
 package de.shadowhunt.pmd.java;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.pmd.lang.ast.Node;
 import net.sourceforge.pmd.lang.java.ast.ASTArguments;
 import net.sourceforge.pmd.lang.java.ast.ASTExplicitConstructorInvocation;
 import net.sourceforge.pmd.lang.java.ast.ASTPrimaryExpression;
+import net.sourceforge.pmd.lang.java.ast.ASTPrimaryPrefix;
+import net.sourceforge.pmd.lang.java.ast.ASTPrimarySuffix;
 import net.sourceforge.pmd.lang.java.ast.JavaNode;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 
 public class NoMultipleFuctionOrConstrucorCallsPerExpression extends AbstractJavaRule {
+
+    private <T> List<T> getChildrenOfType(final Node node, final Class<T> childType) {
+        final int children = node.jjtGetNumChildren();
+        final List<T> result = new ArrayList<>(children);
+        for (int child = 0; child < children; child++) {
+            final Node childNode = node.jjtGetChild(child);
+            if (childType.isInstance(childNode)) {
+                result.add(childType.cast(childNode));
+            }
+        }
+        return result;
+    }
 
     @Override
     public Object visit(final ASTPrimaryExpression node, final Object data) {
@@ -35,13 +51,26 @@ public class NoMultipleFuctionOrConstrucorCallsPerExpression extends AbstractJav
             return visit((JavaNode) node, data);
         }
 
-        final List<ASTPrimaryExpression> parentExpressions = node.getParentsOfType(ASTPrimaryExpression.class);
-        // only process most outer ASTPrimaryExpression
-        if (parentExpressions.isEmpty()) {
-            final List<ASTArguments> arguments = node.findDescendantsOfType(ASTArguments.class);
-            if (arguments.size() > 1) {
-                addViolationWithMessage(data, node, "Do not chain multiple functioncalls.");
+        // constructor call has arguments in prefix
+        int counter = 0;
+        final List<ASTPrimaryPrefix> prefixes = getChildrenOfType(node, ASTPrimaryPrefix.class);
+        for (final ASTPrimaryPrefix prefix : prefixes) {
+            if (prefix.hasDescendantOfType(ASTArguments.class)) {
+                counter++;
             }
+        }
+
+        // function call has arguments in suffix
+        final List<ASTPrimarySuffix> suffixes = getChildrenOfType(node, ASTPrimarySuffix.class);
+        for (final ASTPrimarySuffix suffix : suffixes) {
+            if (suffix.hasDescendantOfType(ASTArguments.class)) {
+                counter++;
+            }
+        }
+
+        // only one constructor or function call allowed
+        if (counter > 1) {
+            addViolationWithMessage(data, node, "Do not chain multiple functioncalls.");
         }
         return visit((JavaNode) node, data);
     }

@@ -40,8 +40,7 @@ public class NoFunctionOrConstructorCallsInArguments extends AbstractJavaRule {
         if (children > 0) {
             for (int child = 0; child < children; child++) {
                 final Node argument = node.jjtGetChild(child);
-                final List<ASTArguments> arguments = argument.findDescendantsOfType(ASTArguments.class);
-                if (!arguments.isEmpty()) {
+                if (argument.hasDescendantOfType(ASTArguments.class)) {
                     addViolationWithMessage(data, node, "argument at position " + (child + 1) + " is a function or constructor call");
                 }
             }

@@ -21,7 +21,7 @@
 <test-data xmlns="http://pmd.sourceforge.net/rule-tests" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
     <test-code>
         <description>Positive case</description>
-        <expected-problems>3</expected-problems>
+        <expected-problems>4</expected-problems>
         <code><![CDATA[
 public class Example {
 	
@@ -38,6 +38,8 @@ public class Example {
         String s = getClass().getSimpleName();
         if ((getClass().hashCode() > 1) && (s.equals(s))) {
         }
+        int result = 0;
+        result = (31 * result) + toString().hashCode();
     }
 }
      ]]></code>
@@ -62,7 +64,9 @@ public class Example {
     	
     	Class<?> clazz = getClass();
     	String s = clazz.getSimpleName();
-		if ((clazz.hashCode() > 1) && (s.equals(s))) {
+		if ((clazz.hashCode() > 1) && s.equals(s)) {
+        }
+        if (!((clazz.hashCode() > 1) && s.equals(s))) {
         }
     }
 }

@@ -23,7 +23,7 @@
     <description>One logical operation per line.</description>
 
     <rule class="de.shadowhunt.pmd.java.NoFunctionOrConstructorCallsInArguments" language="java"
-    	  name="NoFunctionOrConstructorCallsInArguments"
+          name="NoFunctionOrConstructorCallsInArguments"
           message="Avoid calls to functions or constructors in arguments.">
         <description>Arguments must not contain, calls to functions or constructors.</description>
         <priority>1</priority>
@@ -32,11 +32,11 @@
 public class Example {
 
     ...
-    
+
     public void wrong() {
         doSomeThing(new Object(), hashCode());
     }
-    
+
     public void correct() {
         Object object = new Object();
         int random = hashCode();
@@ -46,8 +46,8 @@ public class Example {
 ]]>
         </example>
     </rule>
-        <rule class="de.shadowhunt.pmd.java.NoMultipleFuctionOrConstrucorCallsPerExpression" language="java"
-    	  name="NoMultipleFuctionOrConstrucorCallsPerExpression"
+        <rule class="de.shadowhunt.pmd.java.NoMultipleFuctionOrConstructorCallsPerExpression" language="java"
+          name="NoMultipleFuctionOrConstructorCallsPerExpression"
           message="Avoid having mutliple calls to functions or constructors in a statement.">
         <description>There must be no mutliple calls to functions or constructors in a single statement.</description>
         <priority>1</priority>

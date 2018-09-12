@@ -19,10 +19,10 @@ package de.shadowhunt.pmd.java;
 
 import net.sourceforge.pmd.testframework.SimpleAggregatorTst;
 
-public class NoMultipleFuctionOrConstrucorCallsPerExpressionTest extends SimpleAggregatorTst {
+public class NoMultipleFuctionOrConstructorCallsPerExpressionTest extends SimpleAggregatorTst {
 
     @Override
     protected void setUp() {
-        addRule("rulesets/java/shadowhunt.xml", "NoMultipleFuctionOrConstrucorCallsPerExpression");
+        addRule("rulesets/java/shadowhunt.xml", "NoMultipleFuctionOrConstructorCallsPerExpression");
     }
 }

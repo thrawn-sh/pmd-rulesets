@@ -29,7 +29,7 @@ import net.sourceforge.pmd.lang.java.ast.ASTPrimarySuffix;
 import net.sourceforge.pmd.lang.java.ast.JavaNode;
 import net.sourceforge.pmd.lang.java.rule.AbstractJavaRule;
 
-public class NoMultipleFuctionOrConstrucorCallsPerExpression extends AbstractJavaRule {
+public class NoMultipleFuctionOrConstructorCallsPerExpression extends AbstractJavaRule {
 
     private <T> List<T> getChildrenOfType(final Node node, final Class<T> childType) {
         final int children = node.jjtGetNumChildren();

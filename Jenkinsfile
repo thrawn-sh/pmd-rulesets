@@ -4,7 +4,6 @@
 
 // Jenkins must provide the following tools
 // java-1.8.x : must reference an arbitrary jdk   1.8
-// maven-3.5.x: must reference an arbitrary maven 3.5
 pipeline {
     agent any
 
@@ -19,15 +18,15 @@ pipeline {
         stage ("Checkout") {
             steps {
                 timestamps {
-                    checkout(changelog: false, poll: false, scm: [$class: "GitSCM", branches: [[name: "*/master"]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: "CloneOption", depth: 0, noTags: true, reference: "", shallow: true]], submoduleCfg: [], userRemoteConfigs: [[url: "${env.CLONE_BASE}/pmd-rulesets-maven-plugin.git"]]])
+                    checkout(changelog: false, poll: false, scm: [$class: "GitSCM", branches: [[name: "*/master"]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: "CloneOption", depth: 0, noTags: true, reference: "", shallow: true]], submoduleCfg: [], userRemoteConfigs: [[url: "${env.CLONE_BASE}/pmd-rulesets.git"]]])
                 }
             }
         }
         stage ("Build") {
             steps {
                 timestamps {
-                    withMaven(jdk: "java-1.8.x", maven: "maven-3.5.x") {
-                        sh("mvn --update-snapshots -Dgpg.skip=true -Djarsigner.skip=true clean verify")
+                    withMaven(jdk: "java-1.8.x") {
+                        sh("./mvnw --update-snapshots -Dgpg.skip=true -Djarsigner.skip=true clean verify")
                     }
                 }
             }
